@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GULA </title>
+  <link href="style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .row-detail {
+  display: none;
+  background-color: #fffde7;
+  border-top: none;
+}
+
+.row-detail.show-detail {
+  display: table-row;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.row-detail td {
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+    /* Responsive Table Wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 1rem;
+  scroll-behavior: smooth;
+  margin-bottom: 2rem;
+}
+
+/* Sticky Table Header */
+.table-responsive thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #fff8e1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+    /* Responsive Layout Upgrade */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar .nav-link {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  .jumbotron-slide {
+    height: auto;
+    padding: 3rem 1rem;
+    background-position: center;
+  }
+
+  .jumbotron-slide h1 {
+    font-size: 2rem;
+  }
+
+  .jumbotron-slide p {
+    font-size: 1rem;
+  }
+
+  .inner-card {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .inner-card h2 {
+    font-size: 2rem;
+  }
+
+  .inner-card .subtext {
+    font-size: 0.9rem;
+  }
+
+  .card,
+  .table-responsive {
+    margin: 1rem 0;
+  }
+
+  .chart-container {
+    padding: 1rem;
+    height: auto;
+  }
+
+  .footer {
+    font-size: 0.9rem;
+    padding: 1.5rem 0;
+  }
+
+  .total-card {
+    margin-bottom: 2rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+}
+
+/* Sticky Bottom Navbar for Mobile */
+@media (max-width: 576px) {
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    border-top: 1px solid var(--warna-aksen);
+    background-color: #212529 !important;
+  }
+
+  .navbar-nav {
+    flex-direction: row !important;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .navbar .nav-link {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* Smooth Scroll Effect */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: #ffc107;
+  color: #212529;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 1001;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-to-top:hover {
+  background-color: #ffa000;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Show back-to-top on scroll */
+body.scrolled .back-to-top {
+  display: block;
+}
+
+   /* Animasi Navbar Scroll & Hover */
+.navbar {
+    transition: all 0.4s ease;
+    padding: 1rem 1rem;
+    background: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar.scrolled {
+    background-color: #212529 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 0.5rem 1rem;
+    transition: all 0.4s ease;
+  }
+  
+  .navbar .nav-link {
+    color: #fff !important;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #ffc107;
+    transition: width 0.3s ease;
+  }
+  
+  .navbar .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .navbar .nav-link:hover {
+    color: #ffc107 !important;
+  }
+  
+      body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+      .navbar { background-color: #212529; }
+      .navbar-brand { font-weight: bold; color: #ffd700 !important; }
+      .jumbotron {
+        background: linear-gradient(135deg, #ffd700, #ffa500);
+        color: white;
+        padding: 4rem 2rem;
+        border-radius: 1rem;
+        text-align: center;
+      }
+      .card { border-radius: 0.75rem; }
+      .card-header { background-color: #ffc107; font-weight: bold; color: #212529; }
+      .footer {
+        background-color: #212529;
+        color: #aaa;
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 3rem;
+      }
+      .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        background: white;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      }
+      .btn-dark {
+        transition: background-color 0.3s ease;
+      }
+      .btn-dark:hover {
+        background-color: #ffc107;
+        color: #212529;
+      }
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 10px;
+        }
+      }
+      /* Tabel umum */
+  .table-responsive {
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    font-size: 0.95rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* Table Production and Expenditure Styling */
+  .table-bordered {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .table-bordered th,
+  .table-bordered td {
+    padding: 12px 20px;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+  }
+  
+  .table-bordered th {
+    background-color: #f1f3f5;
+    color: #212529;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .table-bordered td {
+    background-color: #ffffff;
+    color: #495057;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table-bordered tr:hover td {
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+  
+  .table-warning th {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .table-danger th {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9fafb;
+  }
+  
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+  }
+  
+  .table th,
+  .table td {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table-striped > tbody > tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .table-striped > tbody > tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+  
+  .table-warning tbody tr:hover {
+    background-color: #fff9c7;
+  }
+  
+  .table-danger tbody tr:hover {
+    background-color: #f5c6cb;
+  }
+  
+  /* Fancy hover effect on table rows */
+  .table-hover tbody tr:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .table-responsive {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  
+  .table-bordered th {
+    background-color: #ffecb3;
+    color: #333;
+  }
+  
+  .table-bordered td {
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  /* Style on hover for cells in each row */
+  .table-bordered tbody tr:hover td {
+    background-color: #f8f9fa;
+    color: #212529;
+  }
+  
+  .table-warning th,
+  .table-danger th {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  /* Tabel Hasil Produksi & Pengeluaran (Improved) */
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  thead th {
+    font-weight: 600;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  table th, table td {
+    text-align: center;
+    padding: 12px 20px;
+  }
+  
+  .table-warning tbody tr:hover {
+    background-color: #fff9c7;
+  }
+  
+  .table-danger tbody tr:hover {
+    background-color: #f5c6cb;
+  }
+  
+  .table-responsive {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th {
+    background-color: #ffecb3;
+    font-weight: bold;
+  }
+  
+  table td {
+    background-color: #ffffff;
+    color: #212529;
+  }
+  
+  @media (max-width: 768px) {
+    .table th, .table td {
+      padding: 10px;
+    }
+  }
+  
+  
+/* Style untuk total-card dan inner-card */
+.total-card {
+    perspective: 1000px;
+    margin-bottom: 3rem; /* Memberi ruang lebih di bawah kartu */
+}
+
+.inner-card {
+    background: linear-gradient(135deg, #fffbe6, #fff2cc);
+    border-radius: 1rem;
+    padding: 3rem; /* Menambah padding agar lebih besar */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Menambah efek shadow yang lebih besar */
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    height: 100%;
+    max-width: 100%;
+}
+
+/* Hover effect untuk total-card */
+.total-card:hover .inner-card {
+    transform: rotateY(10deg) rotateX(6deg); /* Efek rotasi yang lebih kuat */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2); /* Shadow lebih dalam */
+}
+
+/* Style khusus untuk masing-masing kartu */
+.inner-card.gula {
+    background: linear-gradient(135deg, #fffbe6, #ffe599);
+    color: #856404;
+}
+
+.inner-card.tetes {
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    color: #006064;
+}
+
+.inner-card h6 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.inner-card h2 {
+    font-size: 2.5rem; /* Ukuran font lebih besar */
+    font-weight: bold;
+    color: inherit;
+}
+
+.inner-card .subtext {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 1rem; /* Ukuran subtext lebih besar */
+    margin-top: 1rem; /* Memberikan jarak yang lebih banyak */
+}
+
+.jumbotron-slide {
+  height: 65vh; /* Diperkecil dari 85vh */
+  min-height: 400px; /* Diperkecil dari 500px */
+  background-image: url('pgkwalamadu.webp'); /* Ganti dengan path gambar Anda */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  animation: bgMove 20s ease-in-out infinite alternate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.jumbotron-slide::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.jumbotron-slide h1,
+.jumbotron-slide p {
+  z-index: 2;
+  color: #fff;
+  margin: 0.5rem 0;
+}
+
+.jumbotron-slide h1 {
+  font-size: 2.5rem; /* Ukuran lebih kecil */
+}
+
+.jumbotron-slide p {
+  font-size: 1.2rem;
+  max-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .jumbotron-slide {
+    height: auto;
+    min-height: 70vh; /* Supaya tetap tinggi tapi tidak berlebihan */
+    padding: 1.5rem 1rem;
+  }
+
+  .jumbotron-slide h1 {
+    font-size: 1.6rem;
+  }
+
+  .jumbotron-slide p {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+.content-anim {
+  z-index: 2;
+  animation: fadeInUp 1.2s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efek background gerak */
+@keyframes bgMove {
+  0% {
+    background-position: center;
+  }
+  100% {
+    background-position: center 10%;
+  }
+}
+
+/* Tambahan gaya teks dan brand */
+.animate-text {
+  animation: fadeInUp 1.2s ease-out;
+}
+
+.brand {
+  color: #FFD700;
+  font-weight: bold;
+}
+  
+  
+  .jumbotron-slide::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .content-anim {
+    z-index: 2;
+    animation: fadeInUp 1s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Responsive Text & Spacing */
+@media (max-width: 768px) {
+  .jumbotron-slide {
+    height: auto;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .jumbotron-slide h1 {
+    font-size: 1.8rem;
+  }
+
+  .jumbotron-slide p {
+    font-size: 1rem;
+  }
+
+  .inner-card {
+    padding: 1rem !important;
+  }
+}
+
+/* Efek hover interaktif */
+.total-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.total-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Kartu Gula & Tetes */
+.inner-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  color: #131111;
+}
+
+.inner-card h6 {
+  font-weight: bold;
+  color: #FFD700;
+  letter-spacing: 1px;
+}
+
+.inner-card h2 {
+  font-size: 2.2rem;
+  margin: 0.5rem 0;
+}
+
+/* Animasi on load */
+@keyframes zoomInFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.inner-card {
+  animation: zoomInFade 1.2s ease;
+}
+
+/* Efek scroll */
+.scroll-anim {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-anim.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  /* === Warna Dasar === */
+  :root {
+    --warna-utama: #ff9800;
+    --warna-aksen: #ffc107;
+    --bg-kartu: #fffdf5;
+    --bg-body: #f4f6f8;
+    --text-primer: #212121;
+    --text-lembut: #666;
+    --hover-glow: rgba(255, 204, 0, 0.2);
+  }
+  
+  /* === Background & Font Global === */
+  body {
+    background-color: var(--bg-body);
+    color: var(--text-primer);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* === Navbar Upgrade === */
+  .navbar.scrolled {
+    background: linear-gradient(90deg, #212529, #343a40);
+    border-bottom: 1px solid #ffc107;
+  }
+  
+  /* === Hover Keren di Navbar === */
+  .navbar .nav-link:hover {
+    color: var(--warna-aksen) !important;
+    text-shadow: 0 0 5px var(--warna-aksen);
+  }
+  
+  /* === Total Card Enhancement === */
+  .inner-card {
+    background: linear-gradient(135deg, #fffdf2, #fff2c2);
+    transition: transform 0.5s ease, box-shadow 0.4s ease;
+    border: 1px solid #ffe082;
+  }
+  
+  .total-card:hover .inner-card {
+    transform: rotateY(8deg) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* === Card Glow saat hover === */
+  .card:hover,
+  .table-responsive:hover {
+    box-shadow: 0 0 10px var(--hover-glow);
+  }
+  
+  /* === Tabel Header Keren === */
+  .table-bordered th {
+    background-color: #fff8e1 !important;
+    color: #5d4037;
+    border-bottom: 2px solid #ffcc80;
+  }
+  
+  /* === Button Boost === */
+  .btn-warning,
+  .btn-dark {
+    border-radius: 30px;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-warning:hover,
+  .btn-dark:hover {
+    background-color: #ffa000 !important;
+    color: #fff !important;
+    transform: scale(1.05);
+  }
+  
+  
+  
+  /* === Grafik Container Enhancements === */
+  .chart-container {
+    border: 1px solid #ffeb3b;
+    background: #fffbe6;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.2);
+  }
+  
+  /* === Footer Lebih Lembut === */
+  .footer {
+    background-color: #1c1c1c;
+    color: #bbb;
+    border-top: 1px solid #ffc107;
+  }
+  
+  /* === Scrollbar (Opsional) === */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #ffc107;
+    border-radius: 10px;
+  }
+  /* Hanya berlaku untuk tabel Riwayat Gula & Tetes */
+.table-riwayat {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.table-riwayat table {
+  min-width: 600px; /* Agar bisa scroll horizontal di mobile */
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Scrollbar khusus */
+.table-riwayat::-webkit-scrollbar {
+  height: 6px;
+}
+.table-riwayat::-webkit-scrollbar-thumb {
+  background-color: #ffc107;
+  border-radius: 10px;
+}
+.table-riwayat::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Responsive font */
+@media (max-width: 768px) {
+  .table-riwayat table th,
+  .table-riwayat table td {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+}
+.inner-card {
+  padding: 1rem;
+}
+
+.inner-card h2 {
+  font-size: 2rem;
+}
+
+.inner-card p {
+  font-size: 1.1rem;
+  margin: 6px 0;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">HASIL GULA DAN TETES</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#gula">Gula</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#produksi">Tetes</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Jumbotron tanpa slide -->
+<div class="jumbotron-slide d-flex align-items-center justify-content-center text-center py-2"> 
+  <div class="text-light content-anim w-100">
+
+    <!-- Waktu terakhir diperbarui -->
+    <div class="d-flex justify-content-center">
+      <p class="lead animate-text" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem;">
+        ⏱️ Persediaan: Senin, 21 April 2025
+      </p>
+    </div>
+
+    <!-- Statistik Ringkas -->
+    <div class="row text-center justify-content-center my-3 animate-text">
+
+      <!-- Total Gula -->
+      <div class="col-md-6 col-lg-4">
+        <div class="total-card scroll-anim" style="max-width: 300px; margin: auto; padding: 0.8rem;">
+          <div class="inner-card gula" style="color: black; padding: 0.8rem; border-radius: 10px; background-color: #f8f9fa;">
+            <h6 style="color: black; font-size: 0.9rem;">Total Gula</h6>
+            <h2 id="totalGula" style="font-size: 2rem; color: #0056b3;">200 ton</h2>
+            <p class="subtext" style="font-size: 0.9rem; color: black;">📦 Total saat ini</p>
+            <p style="font-size: 1rem; margin: 6px 0; color: #0056b3;">🏭Persediaan Gudang: 150 ton</p>
+            <p style="font-size: 1rem; margin: 6px 0; color: #0056b3;">Persediaan Belum Terjual: 50 ton</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Tetes -->
+      <div class="col-md-6 col-lg-4">
+        <div class="total-card scroll-anim" style="max-width: 300px; margin: auto; padding: 0.8rem;">
+          <div class="inner-card tetes" style="color: black; padding: 0.8rem; border-radius: 10px; background-color: #f8f9fa;">
+            <h6 style="color: black; font-size: 0.9rem;">Total Tetes</h6>
+            <h2 id="totalTetes" style="font-size: 2rem; color: #0056b3;">-- ton</h2>
+            <p class="subtext" style="font-size: 0.9rem; color: black;">🛢️ Total saat ini</p>
+            <p style="font-size: 1rem; margin: 6px 0; color: #0056b3;">🏭 Persediaan Gudang: 100 ton</p>
+            <p style="font-size: 1rem; margin: 6px 0; color: #0056b3;">Persediaan Belum Terjual: 30 ton</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Kartu Jumlah Saat Ini -->
+<div class="container my-5"id="gula">
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header text-center">Jumlah Gula</div>
+        <div class="card-body text-center">
+          <h3 id="gulaKg">-- ton</h3>
+          <p class="text-muted"><span id="gulaTon">--</span> ton</p>
+          <p class="fw-bold" id="gulaChange"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabel Hasil Produksi -->
+<div class="container my-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+    
+      <h5 class="mb-3">🏭 Produksi gula</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-warning">
+            <tr><th colspan="2" class="text-center">Gula</th></tr>
+            <tr><th>Hari Ini</th><th>S/D Hari Ini</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="produksiGulaHariIni">-</td>
+              <td id="produksiGulaTotal">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- New Column for the second table -->
+    <div class="col-md-6">
+      <h5 class="mb-3">📤 Pengeluaran gula</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-danger">
+            <tr><th colspan="2" class="text-center">Gula</th></tr>
+            <tr><th>Hari Ini</th><th>S/D Hari Ini</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="pengeluaranGulaHariIni">-</td>
+              <td id="pengeluaranGulaTotal">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- card tetes -->
+<div class="container my-5" id="produksi">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header text-center">Jumlah Tetes</div>
+        <div class="card-body text-center">
+          <h3 id="tetesLiter">-- ton</h3>
+          <p class="text-muted"><span id="tetesKL">--</span> ton</p>
+          <p class="fw-bold" id="tetesChange"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabel Pengeluaran -->
+<div class="container my-5" id="pengeluaran">
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6">
+      <h5 class="mb-3">🏭 Produksi Tetes</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-warning">
+            <tr><th colspan="2" class="text-center">Tetes</th></tr>
+            <tr><th>Hari Ini</th><th>S/D Hari Ini</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="produksiTetesHariIni">-</td>
+              <td id="produksiTetesTotal">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h5 class="mb-3">📤 Pengeluaran Tetes</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-danger">
+            <tr><th colspan="2" class="text-center">Tetes</th></tr>
+            <tr><th>Hari Ini</th><th>S/D Hari Ini</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="pengeluaranTetesHariIni">-</td>
+              <td id="pengeluaranTetesTotal">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 MBS — Pemantauan Gula</p>
+</footer>
+<!-- HTML Back to Top Button -->
+<a href="#" class="back-to-top" id="backToTop">↑</a>
+
+<script>
+  // Scroll effect
+  window.addEventListener('scroll', function() {
+    const scrollBtn = document.getElementById('backToTop');
+    if (window.scrollY > 300) {
+      document.body.classList.add('scrolled');
+    } else {
+      document.body.classList.remove('scrolled');
+    }
+  });
+</script>
+
+
+<script>
+  // Navbar shrink on scroll
+  window.addEventListener("scroll", function () {
+    const navbar = document.querySelector(".navbar");
+    if (window.scrollY > 50) {
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.remove("scrolled");
+    }
+  });
+</script>
+
+  
+  <script>
+    // Scroll animation
+    const scrollElements = document.querySelectorAll('.scroll-anim');
+  
+    const scrollInView = (el) => {
+      const elementTop = el.getBoundingClientRect().top;
+      return (
+        elementTop <=
+        (window.innerHeight || document.documentElement.clientHeight) - 100
+      );
+    };
+  
+    const loop = () => {
+      scrollElements.forEach((el) => {
+        if (scrollInView(el)) {
+          el.classList.add('visible');
+        }
+      });
+    };
+  
+    window.addEventListener('scroll', loop);
+    document.addEventListener('DOMContentLoaded', loop);
+
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".expandable-row").forEach(function (row) {
+        row.addEventListener("click", function () {
+          const detailRow = this.nextElementSibling;
+          if (detailRow && detailRow.classList.contains("row-detail")) {
+            detailRow.classList.toggle("show-detail");
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+  document.querySelectorAll('.navbar .nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const navbarToggler = document.querySelector('.navbar-collapse');
+      if (navbarToggler.classList.contains('show')) {
+        new bootstrap.Collapse(navbarToggler).hide();
+      }
+    });
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
